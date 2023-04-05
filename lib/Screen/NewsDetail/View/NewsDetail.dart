@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_api/Screen/News/Provider/NewsProvider.dart';
+import 'package:news_api/Screen/WebView/Provider/WebViewProvider.dart';
 import 'package:provider/provider.dart';
 
 class NewsDetail extends StatefulWidget {
@@ -13,11 +14,14 @@ class NewsDetail extends StatefulWidget {
 class _NewsDetailState extends State<NewsDetail> {
   NewsProvider? newsProviderTrue;
   NewsProvider? newsProviderFalse;
+  WebViewProvider? webViewProviderFalse;
 
   @override
   Widget build(BuildContext context) {
     newsProviderFalse = Provider.of<NewsProvider>(context, listen: false);
     newsProviderTrue = Provider.of<NewsProvider>(context, listen: true);
+
+    webViewProviderFalse = Provider.of<WebViewProvider>(context, listen: false);
 
     int index = ModalRoute.of(context)!.settings.arguments as int;
 
@@ -76,14 +80,25 @@ class _NewsDetailState extends State<NewsDetail> {
                     alignment: Alignment.center,
                     child: InkWell(
                       onTap: () {
+                        webViewProviderFalse!.loardUrl(
+                            newsProviderFalse!.newsModel!.articles![index].url);
                         Navigator.pushNamed(context, 'view');
                       },
                       child: Container(
-                        height: 50,width: 100,
+                        height: 50,
+                        width: 100,
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black),
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.black26,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Read More",
+                          style: GoogleFonts.oranienbaum(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
